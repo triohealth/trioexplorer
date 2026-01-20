@@ -1,6 +1,6 @@
 # Trioexplorer CLI
 
-Command-line interface for the Notesearch API with full feature coverage.
+Command-line interface for the Trioexplorer API with full feature coverage.
 
 ## Installation
 

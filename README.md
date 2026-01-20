@@ -1,4 +1,4 @@
-# Notesearch API
+# Trioexplorer
 
 A powerful hybrid search API for clinical notes, combining semantic vector search with BM25 keyword matching for comprehensive and accurate results.
 
@@ -6,7 +6,7 @@ A powerful hybrid search API for clinical notes, combining semantic vector searc
 
 ## Overview
 
-Notesearch API enables searching across indexed patient notes using three search modes:
+Trioexplorer enables searching across indexed patient notes using three search modes:
 
 | Mode | Description | Best For |
 |------|-------------|----------|
@@ -82,7 +82,7 @@ curl -X GET "$TRIO_API_URL/search" \
 
 See the [Getting Started Notebook](notebooks/getting_started.ipynb) for an interactive tutorial with visualizations.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/triohealth/notesearch-api/blob/main/notebooks/getting_started.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/triohealth/trioexplorer/blob/main/notebooks/getting_started.ipynb)
 
 ---
 
@@ -309,7 +309,7 @@ Returns aggregated metrics including total searches, unique queries, averages, a
 ```python
 import requests
 
-API_URL = "https://api.notesearch.example.com"
+API_URL = "https://api.trioexplorer.example.com"
 API_KEY = "ts_your_api_key_here"
 
 # Search for diabetes-related notes
@@ -335,7 +335,7 @@ for result in results["results"]:
 ### JavaScript
 
 ```javascript
-const API_URL = "https://api.notesearch.example.com";
+const API_URL = "https://api.trioexplorer.example.com";
 const API_KEY = "ts_your_api_key_here";
 
 async function searchNotes(query, options = {}) {
@@ -363,7 +363,7 @@ const results = await searchNotes("elevated blood pressure", {
 ### With Date Filters
 
 ```bash
-curl -X GET "https://api.notesearch.example.com/search" \
+curl -X GET "https://api.trioexplorer.example.com/search" \
   -H "X-API-Key: YOUR_API_KEY" \
   -G \
   --data-urlencode "query=heart failure" \

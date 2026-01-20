@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "trioexplorer"
 version = "0.1.0"
-description = "Command-line interface for the Notesearch API"
+description = "Command-line interface for the Trioexplorer API"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
