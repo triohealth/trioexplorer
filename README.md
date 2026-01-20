@@ -435,6 +435,36 @@ For optimal performance:
 
 ---
 
+## Command-Line Interface
+
+A CLI tool (`trioexplorer`) is available for interactive exploration and scripting.
+
+### Installation
+
+```bash
+pip install ./cli
+```
+
+### Quick Start
+
+```bash
+# Set your API key
+export TRIOEXPLORER_API_KEY="your_api_key_here"
+
+# Search clinical notes
+trioexplorer search "diabetes management"
+
+# List available cohorts
+trioexplorer list cohorts
+
+# Get help
+trioexplorer --help
+```
+
+See the [CLI documentation](cli/README.md) for full usage details.
+
+---
+
 ## Support
 
 For API access, issues, or feature requests, contact your administrator.

@@ -1,0 +1,1 @@
+"""Trioexplorer CLI tests."""
