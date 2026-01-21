@@ -6,10 +6,10 @@ A hybrid search API for clinical notes, combining semantic vector search with BM
 
 ## Documentation
 
-- **[API Reference](https://triohealth.github.io/trioexplorer/)** — Full OpenAPI documentation with interactive examples
+- **[API Reference](https://triohealth.github.io/explorer-search-api/)** — Full OpenAPI documentation with interactive examples
 - **[Getting Started Notebook](notebooks/getting_started.ipynb)** — Interactive tutorial with visualizations
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/triohealth/trioexplorer/blob/main/notebooks/getting_started.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/triohealth/explorer-search-api/blob/main/notebooks/getting_started.ipynb)
 
 ## Quick Start
 
