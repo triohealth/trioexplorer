@@ -1,4 +1,4 @@
-# Trioexplorer
+# Explorer Search API
 
 A hybrid search API for clinical notes, combining semantic vector search with BM25 keyword matching.
 
