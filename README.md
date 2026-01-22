@@ -18,7 +18,7 @@ Trioexplorer enables searching across indexed patient notes using three search m
 
 Set up your environment variables:
 ```bash
-export TRIO_API_URL="http://k8s-notesear-notesear-20ee5f12c9-4c4972a75575c8a7.elb.us-east-1.amazonaws.com:8001"
+export TRIO_API_URL="http://k8s-notesear-notesear-160a47ece7-8f008a1f822228b2.elb.us-east-1.amazonaws.com:8001"
 export TRIO_API_KEY="YOUR_API_KEY"
 ```
 
