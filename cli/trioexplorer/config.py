@@ -13,7 +13,7 @@ API_KEY_ENV = "TRIOEXPLORER_API_KEY"
 API_URL_ENV = "TRIOEXPLORER_API_URL"
 
 # Default values - production API
-DEFAULT_API_URL = "http://k8s-notesear-notesear-20ee5f12c9-4c4972a75575c8a7.elb.us-east-1.amazonaws.com:8001"
+DEFAULT_API_URL = "http://k8s-notesear-notesear-160a47ece7-8f008a1f822228b2.elb.us-east-1.amazonaws.com:8001"
 
 
 def get_api_url(override: Optional[str] = None) -> str:
