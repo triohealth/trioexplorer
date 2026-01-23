@@ -69,6 +69,45 @@ def add_search_parser(subparsers: argparse._SubParsersAction) -> None:
         help="Comma-separated cohort IDs",
     )
 
+    # Patient/Encounter filters
+    parser.add_argument(
+        "--patient-id",
+        metavar="UUID",
+        help="Filter to specific patient UUID",
+    )
+
+    parser.add_argument(
+        "--encounter-id",
+        metavar="UUID",
+        help="Filter to specific encounter UUID",
+    )
+
+    # Note filters
+    parser.add_argument(
+        "--note-types",
+        metavar="TYPES",
+        help="Comma-separated note types (e.g., 'Progress Note,Discharge Summary')",
+    )
+
+    parser.add_argument(
+        "--date-from",
+        metavar="DATE",
+        help="Filter from date (YYYY-MM-DD, inclusive)",
+    )
+
+    parser.add_argument(
+        "--date-to",
+        metavar="DATE",
+        help="Filter to date (YYYY-MM-DD, inclusive)",
+    )
+
+    # Noise control
+    parser.add_argument(
+        "--include-noise",
+        action="store_true",
+        help="Include notes marked as noise (default: false)",
+    )
+
     parser.add_argument(
         "--rerank",
         type=str_to_bool,
@@ -186,6 +225,24 @@ def run_search(client: SearchClient, args: argparse.Namespace) -> None:
     # Add optional parameters
     if args.cohort_ids:
         params["cohort-ids"] = args.cohort_ids
+
+    if args.patient_id:
+        params["patient-id"] = args.patient_id
+
+    if args.encounter_id:
+        params["encounter-id"] = args.encounter_id
+
+    if args.note_types:
+        params["note-types"] = args.note_types
+
+    if args.date_from:
+        params["date-from"] = args.date_from
+
+    if args.date_to:
+        params["date-to"] = args.date_to
+
+    if args.include_noise:
+        params["include-noise"] = "true"
 
     if args.top_k_retrieval:
         params["top_k_retrieval"] = args.top_k_retrieval
