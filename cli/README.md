@@ -54,8 +54,12 @@ trioexplorer search "pneumonia" \
 # Custom filters (Turbopuffer format)
 trioexplorer search "sepsis" --filters '[["note_type", "Eq", "DISCHARGE SUMMARY"]]'
 
-# Entity filters
-trioexplorer search "medications" --entity-filters '{"medication": {"present": true}}'
+# Entity filters (medications, labs, vitals, diagnoses, etc.)
+trioexplorer search "diabetes" --entity-filters '{"medications_present": ["metformin"]}'
+trioexplorer search "kidney function" --entity-filters '{"lab_tests": ["creatinine", "GFR"]}'
+trioexplorer search "hypertension" --entity-filters '{"vitals": ["blood pressure", "BP"]}'
+
+# See FILTERS.md for comprehensive filter documentation
 
 # Output formats
 trioexplorer search "coughing" --format json

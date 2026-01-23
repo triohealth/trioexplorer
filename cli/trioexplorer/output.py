@@ -105,6 +105,7 @@ def output_search_table(
     table.add_column("Score", justify="right", width=SCORE_WIDTH)
     table.add_column("Patient", width=12)
     table.add_column("Encounter", width=12)
+    table.add_column("Note ID", width=36)
     table.add_column("Note Type", width=20)
     table.add_column("Date", width=12)
     table.add_column("Text", width=text_width, overflow="fold")
@@ -119,6 +120,7 @@ def output_search_table(
             format_score(score),
             str(result.get("patient_id", ""))[:12],
             str(result.get("encounter_id", ""))[:12],
+            str(result.get("note_id", "")),
             truncate_text(result.get("note_type", ""), 20),
             str(result.get("note_date", ""))[:10],
             text,
