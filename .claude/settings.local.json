@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl patch:*)",
+      "Bash(kubectl rollout:*)",
+      "Bash(trioexplorer --help:*)",
+      "Bash(trioexplorer --version:*)",
+      "Skill(commit)",
+      "Bash(gh pr create --base main --title \"Add trioexplorer CLI package\" --body \"$\\(cat <<''EOF''\n## Summary\n- Add `trioexplorer` CLI package for interactive exploration and scripting of the Trioexplorer API\n- CLI provides commands for searching clinical notes, listing resources, and viewing statistics\n- Configured for production API by default with full test coverage \\(48 tests\\)\n\n## Test plan\n- [x] `pip install -e ./cli` installs successfully\n- [x] `trioexplorer --help` shows all commands\n- [x] `trioexplorer --version` shows 0.1.0\n- [x] `pytest` passes all 48 tests\n\n🤖 Generated with [Claude Code]\\(https://claude.ai/code\\)\nEOF\n\\)\")",
+      "Bash(gh pr create:*)",
+      "Bash(export TRIOEXPLORER_API_KEY=ts_1c72f4db3b894b6c9099a6a757bc8a7f)",
+      "Bash(trioexplorer list:*)",
+      "Bash(trioexplorer search:*)",
+      "Bash(trioexplorer stats:*)",
+      "WebFetch(domain:triohealth.github.io)",
+      "Bash(TRIOEXPLORER_API_KEY=ts_1c72f4db3b894b6c9099a6a757bc8a7f trioexplorer search:*)",
+      "Bash(python3 -c:*)",
+      "Bash(export TRIOEXPLORER_API_KEY=ts_ebbcccd2ad0d40b982a9708d3a44b695)"
+    ]
+  }
+}
