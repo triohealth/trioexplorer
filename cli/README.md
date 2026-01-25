@@ -40,6 +40,14 @@ trioexplorer search "chest pain" -k 20 --type semantic
 # Cohort filtering
 trioexplorer search "diabetes" --cohort-ids abc123,def456
 
+# Patient/encounter filtering
+trioexplorer search "medication history" --patient-id "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"
+trioexplorer search "vital signs" --encounter-id "ABC12345-6789-0DEF-GHIJ"
+
+# Note type and date filtering
+trioexplorer search "discharge planning" --note-types "Discharge Summary,Progress Note"
+trioexplorer search "recent visits" --date-from 2025-01-01 --date-to 2025-06-30
+
 # Quality filtering
 trioexplorer search "cardiac" --min-quality-score 0.8 --min-chunk-quality-score 0.7
 
@@ -51,7 +59,7 @@ trioexplorer search "pneumonia" \
   --chunk-multiplier 3.0 \
   --top-k-retrieval 500
 
-# Custom filters (Turbopuffer format)
+# Custom metadata filters
 trioexplorer search "sepsis" --filters '[["note_type", "Eq", "DISCHARGE SUMMARY"]]'
 
 # Entity filters (medications, labs, vitals, diagnoses, etc.)

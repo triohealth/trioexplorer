@@ -164,7 +164,7 @@ def add_search_parser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "-f", "--filters",
         metavar="JSON",
-        help="Turbopuffer filters (JSON format)",
+        help="Metadata filters (JSON format)",
     )
 
     parser.add_argument(
@@ -199,16 +199,64 @@ def validate_json_arg(value: str, arg_name: str) -> Any:
         sys.exit(1)
 
 
+def build_filters_from_args(args: argparse.Namespace, user_filters: Any) -> Any:
+    """Build metadata filters from CLI arguments.
+
+    Converts CLI filter flags (--patient-id, --encounter-id, --note-types,
+    --date-from, --date-to) into the JSON filter format expected by the API.
+    Merges with any user-provided --filters argument.
+    """
+    filter_conditions = []
+
+    # Patient filter
+    if args.patient_id:
+        filter_conditions.append(["patient_id", "Eq", args.patient_id])
+
+    # Encounter filter
+    if args.encounter_id:
+        filter_conditions.append(["encounter_id", "Eq", args.encounter_id])
+
+    # Note types filter
+    if args.note_types:
+        note_types = [t.strip() for t in args.note_types.split(",")]
+        if len(note_types) == 1:
+            filter_conditions.append(["note_type", "Eq", note_types[0]])
+        else:
+            filter_conditions.append(["note_type", "In", note_types])
+
+    # Date range filters
+    if args.date_from:
+        filter_conditions.append(["note_date", "Gte", args.date_from])
+
+    if args.date_to:
+        filter_conditions.append(["note_date", "Lte", args.date_to])
+
+    # Merge with user-provided filters
+    if user_filters:
+        filter_conditions.append(user_filters)
+
+    # Build final filter structure
+    if not filter_conditions:
+        return None
+    elif len(filter_conditions) == 1:
+        return filter_conditions[0]
+    else:
+        return ["And", filter_conditions]
+
+
 def run_search(client: SearchClient, args: argparse.Namespace) -> None:
     """Execute the search command."""
     # Validate JSON arguments
-    filters = None
+    user_filters = None
     if args.filters:
-        filters = validate_json_arg(args.filters, "--filters")
+        user_filters = validate_json_arg(args.filters, "--filters")
 
     entity_filters = None
     if args.entity_filters:
         entity_filters = validate_json_arg(args.entity_filters, "--entity-filters")
+
+    # Build filters from CLI args (--patient-id, --encounter-id, etc.)
+    filters = build_filters_from_args(args, user_filters)
 
     # Build query parameters
     params = {
@@ -225,21 +273,6 @@ def run_search(client: SearchClient, args: argparse.Namespace) -> None:
     # Add optional parameters
     if args.cohort_ids:
         params["cohort-ids"] = args.cohort_ids
-
-    if args.patient_id:
-        params["patient-id"] = args.patient_id
-
-    if args.encounter_id:
-        params["encounter-id"] = args.encounter_id
-
-    if args.note_types:
-        params["note-types"] = args.note_types
-
-    if args.date_from:
-        params["date-from"] = args.date_from
-
-    if args.date_to:
-        params["date-to"] = args.date_to
 
     if args.include_noise:
         params["include-noise"] = "true"

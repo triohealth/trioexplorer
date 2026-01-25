@@ -7,7 +7,7 @@ This guide covers entity and assertion filters for refining clinical note search
 The API supports two types of filters:
 
 1. **Entity Filters** (`--entity-filters`) — Filter by extracted medical entities (medications, diagnoses, symptoms, etc.)
-2. **Turbopuffer Filters** (`--filters`) — Filter by note metadata (note_type, date, etc.)
+2. **Metadata Filters** (`--filters`) — Filter by note metadata (note_type, date, etc.)
 
 ## Available Entity Filter Fields
 
@@ -167,23 +167,96 @@ trioexplorer search "efficacy assessment" \
   -k 20
 ```
 
-## Turbopuffer Filters (Metadata)
+## Metadata Filters
 
-For filtering by note metadata rather than extracted entities:
+For filtering by note metadata rather than extracted entities.
+
+### Patient and Encounter Filtering
 
 ```bash
-# Filter by note type
-trioexplorer search "discharge planning" \
-  --filters '[["note_type", "Eq", "DISCHARGE SUMMARY"]]'
+# Filter to a specific patient
+trioexplorer search "medication history" \
+  --patient-id "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"
 
-# Filter by date range (use with search dates)
+# Filter to a specific encounter
+trioexplorer search "vital signs" \
+  --encounter-id "ABC12345-6789-0DEF-GHIJ-KLMNOPQRSTUV"
+
+# Combine patient with other filters
+trioexplorer search "diabetes management" \
+  --patient-id "001EFCDE-62D9-42A0-B184-3E3C732EBDA5" \
+  --date-from 2025-01-01 \
+  --note-types "Progress Note,Discharge Summary"
+```
+
+### Note Type Filtering
+
+```bash
+# Single note type
+trioexplorer search "discharge planning" \
+  --note-types "Discharge Summary"
+
+# Multiple note types (comma-separated, OR logic)
+trioexplorer search "patient assessment" \
+  --note-types "Progress Note,H&P,Consultation"
+```
+
+### Date Range Filtering
+
+```bash
+# Notes from a specific date onwards
 trioexplorer search "follow up" \
+  --date-from 2025-01-01
+
+# Notes before a specific date
+trioexplorer search "historical treatment" \
+  --date-to 2024-12-31
+
+# Notes within a date range
+trioexplorer search "treatment response" \
   --date-from 2025-01-01 \
   --date-to 2025-01-31
+```
 
-# Filter by specific patient
-trioexplorer search "medication history" \
-  --patient-id "PATIENT-UUID-HERE"
+### Raw Filter Format (Advanced)
+
+For complex filter logic, use the `--filters` flag with JSON format:
+
+```bash
+# Filter by note type (raw format)
+trioexplorer search "discharge planning" \
+  --filters '["note_type", "Eq", "DISCHARGE SUMMARY"]'
+
+# OR logic for patients
+trioexplorer search "comparison" \
+  --filters '["Or", [["patient_id", "Eq", "PATIENT-1-UUID"], ["patient_id", "Eq", "PATIENT-2-UUID"]]]'
+
+# Exclude specific note types
+trioexplorer search "clinical notes" \
+  --filters '["Not", ["note_type", "Eq", "Telephone Encounter"]]'
+```
+
+### Filter Format Reference
+
+The API uses an array-based filter format:
+
+| Field | Operators | Example |
+|-------|-----------|---------|
+| `patient_id` | `Eq` | `["patient_id", "Eq", "UUID"]` |
+| `encounter_id` | `Eq` | `["encounter_id", "Eq", "UUID"]` |
+| `note_type` | `Eq`, `NotEq`, `In`, `NotIn` | `["note_type", "In", ["Progress Note", "H&P"]]` |
+| `note_date` | `Eq`, `Lt`, `Lte`, `Gt`, `Gte` | `["note_date", "Gte", "2025-01-01"]` |
+| `cohort_ids` | `Contains`, `ContainsAny` | `["cohort_ids", "Contains", 123]` |
+
+Logical operators: `And`, `Or`, `Not`
+
+```json
+// Combine multiple conditions
+["And", [
+  ["patient_id", "Eq", "UUID"],
+  ["note_date", "Gte", "2025-01-01"],
+  ["note_type", "In", ["Progress Note", "Discharge Summary"]]
+]]
 ```
 
 ## Assertion Types Explained

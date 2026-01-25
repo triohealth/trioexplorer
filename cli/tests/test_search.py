@@ -1,10 +1,12 @@
 """Tests for the search command."""
 
+import argparse
 import json
 import pytest
 from httpx import Response
 
 from trioexplorer.client import create_client
+from trioexplorer.commands.search import build_filters_from_args
 
 
 class TestSearchCommand:
@@ -91,7 +93,7 @@ class TestSearchCommand:
         assert response["results"] is not None
 
     def test_search_with_filters(self, mock_api, sample_search_response, env_with_api_key):
-        """Test search with Turbopuffer filters."""
+        """Test search with metadata filters."""
         mock_api.get("/search").mock(
             return_value=Response(200, json=sample_search_response)
         )
@@ -194,3 +196,98 @@ class TestSearchErrors:
             create_client()
 
         assert "TRIOEXPLORER_API_KEY" in str(exc_info.value)
+
+
+class TestBuildFiltersFromArgs:
+    """Tests for the build_filters_from_args function."""
+
+    def _make_args(self, **kwargs):
+        """Create an argparse.Namespace with default values."""
+        defaults = {
+            "patient_id": None,
+            "encounter_id": None,
+            "note_types": None,
+            "date_from": None,
+            "date_to": None,
+        }
+        defaults.update(kwargs)
+        return argparse.Namespace(**defaults)
+
+    def test_no_filters(self):
+        """Test with no filter arguments."""
+        args = self._make_args()
+        result = build_filters_from_args(args, None)
+        assert result is None
+
+    def test_patient_id_filter(self):
+        """Test patient_id filter construction."""
+        args = self._make_args(patient_id="001EFCDE-62D9-42A0-B184-3E3C732EBDA5")
+        result = build_filters_from_args(args, None)
+        assert result == ["patient_id", "Eq", "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"]
+
+    def test_encounter_id_filter(self):
+        """Test encounter_id filter construction."""
+        args = self._make_args(encounter_id="ABC12345-6789-0DEF-GHIJ")
+        result = build_filters_from_args(args, None)
+        assert result == ["encounter_id", "Eq", "ABC12345-6789-0DEF-GHIJ"]
+
+    def test_single_note_type_filter(self):
+        """Test single note type filter construction."""
+        args = self._make_args(note_types="Progress Note")
+        result = build_filters_from_args(args, None)
+        assert result == ["note_type", "Eq", "Progress Note"]
+
+    def test_multiple_note_types_filter(self):
+        """Test multiple note types filter construction."""
+        args = self._make_args(note_types="Progress Note,Discharge Summary")
+        result = build_filters_from_args(args, None)
+        assert result == ["note_type", "In", ["Progress Note", "Discharge Summary"]]
+
+    def test_date_from_filter(self):
+        """Test date_from filter construction."""
+        args = self._make_args(date_from="2025-01-01")
+        result = build_filters_from_args(args, None)
+        assert result == ["note_date", "Gte", "2025-01-01"]
+
+    def test_date_to_filter(self):
+        """Test date_to filter construction."""
+        args = self._make_args(date_to="2025-12-31")
+        result = build_filters_from_args(args, None)
+        assert result == ["note_date", "Lte", "2025-12-31"]
+
+    def test_combined_filters(self):
+        """Test multiple filter arguments combined with And."""
+        args = self._make_args(
+            patient_id="001EFCDE-62D9-42A0-B184-3E3C732EBDA5",
+            date_from="2025-01-01",
+            note_types="Progress Note",
+        )
+        result = build_filters_from_args(args, None)
+        assert result == [
+            "And",
+            [
+                ["patient_id", "Eq", "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"],
+                ["note_type", "Eq", "Progress Note"],
+                ["note_date", "Gte", "2025-01-01"],
+            ],
+        ]
+
+    def test_merge_with_user_filters(self):
+        """Test merging CLI filters with user-provided filters."""
+        args = self._make_args(patient_id="001EFCDE-62D9-42A0-B184-3E3C732EBDA5")
+        user_filters = ["cohort_ids", "Contains", 123]
+        result = build_filters_from_args(args, user_filters)
+        assert result == [
+            "And",
+            [
+                ["patient_id", "Eq", "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"],
+                ["cohort_ids", "Contains", 123],
+            ],
+        ]
+
+    def test_user_filters_only(self):
+        """Test with only user-provided filters."""
+        args = self._make_args()
+        user_filters = ["note_type", "Eq", "Discharge Summary"]
+        result = build_filters_from_args(args, user_filters)
+        assert result == ["note_type", "Eq", "Discharge Summary"]

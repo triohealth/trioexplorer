@@ -20,10 +20,15 @@ Options:
 - `-d MODE` — Dedupe mode: `patient`, `encounter`, `note`, or `none` (default: encounter)
 - `--type TYPE` — Search type: `keyword`, `semantic`, or `hybrid` (default)
 - `--cohort-ids IDS` — Comma-separated cohort IDs to search
+- `--patient-id UUID` — Filter to specific patient
+- `--encounter-id UUID` — Filter to specific encounter
+- `--note-types TYPES` — Comma-separated note types (e.g., "Progress Note,Discharge Summary")
+- `--date-from DATE` — Filter notes from date (YYYY-MM-DD)
+- `--date-to DATE` — Filter notes to date (YYYY-MM-DD)
 - `--format FORMAT` — Output: `table` (default), `json`, or `csv`
 - `--full-text` — Show full note text
 - `--entity-filters JSON` — Filter by extracted entities (see Filters section)
-- `--filters JSON` — Turbopuffer metadata filters
+- `--filters JSON` — Advanced metadata filters (JSON format)
 - `--rerank false` — Disable semantic reranking
 - `--vector-weight N` — Weight for vector vs keyword (0.0-1.0)
 
@@ -87,6 +92,36 @@ trioexplorer search "patient having trouble with blood sugar" --type semantic --
 Search within specific cohorts, dedupe by patient:
 ```bash
 trioexplorer search "chest pain" --cohort-ids abc123 -d patient -k 10
+```
+
+## Patient & Encounter Filtering
+
+Filter to a specific patient:
+```bash
+trioexplorer search "medication history" --patient-id "001EFCDE-62D9-42A0-B184-3E3C732EBDA5"
+```
+
+Filter to a specific encounter:
+```bash
+trioexplorer search "vital signs" --encounter-id "ABC12345-6789-0DEF-GHIJ"
+```
+
+Combine patient with date range and note types:
+```bash
+trioexplorer search "diabetes management" \
+  --patient-id "001EFCDE-62D9-42A0-B184-3E3C732EBDA5" \
+  --date-from 2025-01-01 \
+  --note-types "Progress Note,Discharge Summary"
+```
+
+Filter by note type only:
+```bash
+trioexplorer search "discharge planning" --note-types "Discharge Summary"
+```
+
+Filter by date range:
+```bash
+trioexplorer search "recent visits" --date-from 2025-01-01 --date-to 2025-06-30
 ```
 
 ## Entity Filters

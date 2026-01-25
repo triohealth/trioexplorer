@@ -49,3 +49,9 @@ Thumbs.db
 *.pem
 *.key
 credentials.json
+
+# Build artifacts
+cli/build/
+
+# Claude traces
+.claude/traces/

@@ -152,7 +152,7 @@ def add_list_parser(subparsers: argparse._SubParsersAction) -> None:
     filters_parser.add_argument(
         "--namespace",
         metavar="NS",
-        help="Turbopuffer namespace (uses default if not specified)",
+        help="Search namespace (uses default if not specified)",
     )
     filters_parser.add_argument(
         "--field",
