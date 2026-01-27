@@ -14,7 +14,7 @@ A hybrid search API for clinical notes, combining semantic vector search with BM
 ## Quick Start
 
 ```bash
-export TRIO_API_URL="http://k8s-notesear-notesear-20ee5f12c9-4c4972a75575c8a7.elb.us-east-1.amazonaws.com:8001"
+export TRIO_API_URL="https://search.trioexplorer.com"
 export TRIO_API_KEY="YOUR_API_KEY"
 
 # Search across all cohorts
