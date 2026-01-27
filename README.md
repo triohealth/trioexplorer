@@ -36,7 +36,9 @@ Install and use the command-line interface for interactive exploration:
 ```bash
 pip install ./cli
 
-export TRIOEXPLORER_API_KEY="your_api_key_here"
+# Store your API key globally (recommended, one-time setup)
+mkdir -p ~/.trioexplorer
+echo "TRIOEXPLORER_API_KEY=your_api_key_here" > ~/.trioexplorer/.env
 
 trioexplorer search "diabetes management"
 trioexplorer list cohorts

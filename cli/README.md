@@ -17,7 +17,18 @@ pip install -e ".[dev]"
 
 ## Configuration
 
-Set the following environment variables:
+Store your API key in the system-wide config (recommended):
+
+```bash
+mkdir -p ~/.trioexplorer
+echo "TRIOEXPLORER_API_KEY=ts_your_api_key_here" > ~/.trioexplorer/.env
+```
+
+The CLI looks for the API key in this order:
+
+1. `~/.trioexplorer/.env` (system-wide, recommended)
+2. `.env` in the current directory or repo root
+3. `TRIOEXPLORER_API_KEY` environment variable
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
