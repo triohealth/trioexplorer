@@ -33,9 +33,9 @@ The CLI looks for the API key in this order:
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `TRIOEXPLORER_API_KEY` | Yes | | API key with read entitlements |
-| `TRIOEXPLORER_API_URL` | No | Production ELB | Search API base URL |
+| `TRIOEXPLORER_API_URL` | No | search.trioexplorer.com | Search API base URL |
 
-To get an API key, contact sales@trioehealth.com
+To get an API key, contact salessupportdesk@triohealth.com
 
 ## Usage
 

@@ -2,7 +2,7 @@
 
 A hybrid search API for clinical notes, combining semantic vector search with BM25 keyword matching.
 
-> **Note:** To get an API key, contact sales@trioehealth.com
+> **Note:** To get an API key, contact salessupportdesk@triohealth.com
 
 ## Documentation
 
