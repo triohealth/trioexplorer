@@ -41,6 +41,21 @@ trioexplorer list cohorts
 ## Common Search Parameters
 
 - `query`: Your search text (required)
-- `-k`: Number of results (default: 10)
+- `-k`: Number of results (default: 10, max: 10,000)
 - `-t` / `--search-type`: `hybrid`, `semantic`, or `keyword`
 - `--cohort-ids`: Filter by cohort IDs (comma-separated)
+- `--patient-id`: Filter to a specific patient UUID
+- `--distinct`: De-duplication mode (`encounter`, `patient`, `note`, `none`)
+
+## Retrieving All Notes for a Patient
+
+To get all notes for a specific patient, use keyword search with a common term (empty queries are not supported):
+
+```bash
+# Get all notes for a patient (up to 10k)
+trioexplorer search "patient" --patient-id <UUID> -k 10000 -t keyword --rerank false --distinct note
+
+# Alternative common terms that appear in most notes: "the", "and", "is"
+```
+
+**Note:** Results are ordered by relevance score, not by date. There is currently no sort option in the API.
