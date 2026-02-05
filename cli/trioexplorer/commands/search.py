@@ -45,7 +45,7 @@ def add_search_parser(subparsers: argparse._SubParsersAction) -> None:
         type=int,
         default=10,
         metavar="NUM",
-        help="Number of results to return (1-300, default: 10)",
+        help="Number of results to return (1-10000, default: 10)",
     )
 
     parser.add_argument(
